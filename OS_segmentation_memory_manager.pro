@@ -18,10 +18,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
+    process.cpp \
+    segment.cpp \
     segmentationselector.cpp
 
 HEADERS += \
     mainwindow.h \
+    process.h \
+    segment.h \
     segmentationselector.h
 
 FORMS += \
