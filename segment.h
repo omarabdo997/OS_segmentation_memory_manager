@@ -1,6 +1,6 @@
 #ifndef SEGMENT_H
 #define SEGMENT_H
-#include <segmentationselector.h>
+#include <QString>
 
 class Segment
 {

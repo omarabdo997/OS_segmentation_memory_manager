@@ -1,4 +1,4 @@
-#include "process.h"
+#include "sysprocess.h"
 
 Process::Process()
 {
