@@ -10,7 +10,6 @@
 #include <QPair>
 #include <QFont>
 #include <QDebug>
-#import "math.h"
 #include <QComboBox>
 
 namespace Ui {
@@ -40,6 +39,8 @@ public:
     QVector<QVector<QPair<QString, int> > > getProcesses_values() const;
 
     int getAllocation_algorithm() const;
+
+    void setNumber_processes(int value);
 
 private slots:
     void on_next_first_button_clicked();

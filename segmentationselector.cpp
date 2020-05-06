@@ -5,6 +5,7 @@ SegmentationSelector::SegmentationSelector(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::SegmentationSelector)
 {
+
     ui->setupUi(this);
     ui->holes_widget->hide();
     ui->processess_widget->hide();
@@ -211,6 +212,11 @@ void SegmentationSelector::on_next_third_button_clicked()
     this->rdy=1;
     this->close();
 
+}
+
+void SegmentationSelector::setNumber_processes(int value)
+{
+    number_processes = value;
 }
 
 int SegmentationSelector::getAllocation_algorithm() const
