@@ -21,6 +21,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void draw();
+    void draw2();
     void clear(QVBoxLayout *layout);
     void delay();
 

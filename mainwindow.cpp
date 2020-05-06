@@ -58,17 +58,17 @@ void MainWindow::draw()
      for(int i=0;i<10;i++)
      {
          QLabel *label;
-         if(i%2==0)
-         {
-             label=new QLabel("P"+QString::number(i+1)+"\nCode");
-             label->setFrameStyle(4);
-             color=QPalette(Qt::Window,Qt::red);
-         }
-         else if(i==5 or i==7)
+         if(i==5 or i==7 or i==0)
          {
              label=new QLabel("");
              label->setFrameStyle(1);
              color=QPalette(Qt::Window,Qt::gray);
+         }
+         else if(i%2==0)
+         {
+             label=new QLabel("P"+QString::number(i+1)+"\nCode");
+             label->setFrameStyle(4);
+             color=QPalette(Qt::Window,Qt::red);
          }
          else
          {
@@ -85,6 +85,91 @@ void MainWindow::draw()
          label->setMinimumSize(200,scale*100);
          label->setMaximumSize(200,scale*100);
          ui->memory_layout->addWidget(label);
+
+         QLabel *ruler=new QLabel(QString::number(i+1));
+         ruler->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
+         ruler->setMinimumHeight(scale*100);
+         ruler->setMaximumHeight(scale*100);
+         ui->ruler_layout->addWidget(ruler);
+     }
+}
+
+void MainWindow::draw2()
+{
+    clear(ui->memory_layout);
+    clear(ui->ruler_layout);
+    QFont font_14("times",14);
+    QPalette color;
+    int scale=1;
+    QLabel *zero_ruler=new QLabel("0");
+    zero_ruler->setMinimumHeight(10);
+    zero_ruler->setMaximumHeight(10);
+    ui->ruler_layout->addWidget(zero_ruler);
+
+     for(int i=0;i<10;i++)
+     {
+         if(i==0)
+                  {
+                      QPushButton *button=new QPushButton("Occupied");
+         //             button->setAutoFillBackground(true);
+                      button->setFont(font_14);
+                      button->setStyleSheet("background-color:rgb(5, 176, 255)");
+
+                      connect(button,&QPushButton::clicked,[=](){
+                          draw();
+                      });
+                      button->setPalette(color);
+                      button->setMinimumSize(200,scale*100);
+                      button->setMaximumSize(200,scale*100);
+                      ui->memory_layout->addWidget(button);
+                  }
+
+
+         else if(i%2==0)
+         {
+             QLabel *label;
+             label=new QLabel("P"+QString::number(i+1)+"\nCode");
+             label->setFrameStyle(4);
+             color=QPalette(Qt::Window,Qt::red);
+             label->setAutoFillBackground(true);
+             label->setPalette(color);
+             label->setFont(font_14);
+             label->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+             label->setMinimumSize(200,scale*100);
+             label->setMaximumSize(200,scale*100);
+             ui->memory_layout->addWidget(label);
+         }
+         else if(i==5 or i==7)
+         {
+             QLabel *label;
+             label=new QLabel("");
+             label->setFrameStyle(1);
+             color=QPalette(Qt::Window,Qt::gray);
+             label->setAutoFillBackground(true);
+             label->setPalette(color);
+             label->setFont(font_14);
+             label->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+             label->setMinimumSize(200,scale*100);
+             label->setMaximumSize(200,scale*100);
+             ui->memory_layout->addWidget(label);
+         }
+         else
+         {
+             QLabel *label;
+             label=new QLabel("P"+QString::number(i+1)+"\nCode");
+             label->setFrameStyle(4);
+             color=QPalette(Qt::Window,Qt::blue);
+             label->setAutoFillBackground(true);
+             label->setPalette(color);
+             label->setFont(font_14);
+             label->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+             label->setMinimumSize(200,scale*100);
+             label->setMaximumSize(200,scale*100);
+             ui->memory_layout->addWidget(label);
+         }
+
+
+
 
          QLabel *ruler=new QLabel(QString::number(i+1));
          ruler->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
@@ -141,5 +226,5 @@ void MainWindow::showEvent(QShowEvent *ev)
 
 void MainWindow::showEventHelper()
 {
-    draw();
+    draw2();
 }
