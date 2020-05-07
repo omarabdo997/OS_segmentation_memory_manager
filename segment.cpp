@@ -42,12 +42,40 @@ QString Segment::get_name()
     return name;
 }
 
-void Segment::set_status(bool value)
+void Segment::set_isHole(bool value)
 {
-    status = value;
+    isHole = value;
 }
 
-bool Segment::get_status()
+bool Segment::get_isHole()
 {
-    return status;
+    return isHole;
+}
+
+int Segment::get_numProcesses()
+{
+    return numProcesses;
+}
+
+void Segment::set_numProcesses(int value)
+{
+    numProcesses =  value;
+}
+
+void Segment::set_processesNames(QVector<QString> vec)
+{
+    processesNames = vec;
+    set_numProcesses(processesNames.size());
+}
+
+QVector<QString> Segment::get_processesNames()
+{
+    return processesNames;
+}
+
+
+void Segment::addProcessname(QString Name)
+{
+    processesNames.push_back(Name);
+    numProcesses++;
 }
