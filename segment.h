@@ -1,15 +1,17 @@
 #ifndef SEGMENT_H
 #define SEGMENT_H
 #include <QString>
-
+#include <QVector>
 class Segment
 {
 private:
     int from;
     int to;
     QString name;
-    bool status;
-
+    bool isHole;
+    QVector<QString> processesNames;
+    int numProcesses;
+    void set_numProcesses(int value);
 public:
     Segment();
     Segment(int from,int to,QString name);
@@ -19,8 +21,13 @@ public:
     int get_to();
     void set_name(QString value);
     QString get_name();
-    void set_status(bool value);
-    bool get_status();
+    void set_isHole(bool value);
+    bool get_isHole();
+    void addProcessname(QString Name);
+    QVector<QString> get_processesNames();
+    void set_processesNames(QVector<QString> vec);
+    int get_numProcesses();
+
 };
 
 #endif // SEGMENT_H
