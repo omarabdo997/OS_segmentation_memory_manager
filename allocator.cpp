@@ -29,7 +29,7 @@ void Allocator::deallocate(Segment s, QVector<Segment> &segments, QString pName 
 {
     for(int i = 0 ; i < segments.size() ; ++i)
     {
-        if(s == segments[i])
+        if((s.get_name() == segments[i].get_name()) && (s.get_processesNames() == segments[i].get_processesNames()))
         {
             if(segments[i].get_numProcesses() > 1 && pName != "")
             {
@@ -39,7 +39,7 @@ void Allocator::deallocate(Segment s, QVector<Segment> &segments, QString pName 
                     if(temp[i] == pName)
                     {
                         temp.remove(i);
-                        segments[i].set_processesNames(tmp);
+                        segments[i].set_processesNames(temp);
                         break;
                     }
                 }
