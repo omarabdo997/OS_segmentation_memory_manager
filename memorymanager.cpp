@@ -30,6 +30,18 @@ void MemoryManager::setSegments(const QVector<Segment> &value)
     segments = value;
 }
 
+void MemoryManager::deallocate_segment(Segment s)
+{
+    allocator.deallocate(s, segments);
+}
+
+void MemoryManager::deallocate_process(Process p)
+{
+    QVector<Segment> process_segments = p.getSegments();
+    for(int i = 0 ; i<process_segments.size(); ++i)
+        allocator.deallocate(process_segments[i], segments, p.getName());
+}
+
 MemoryManager::MemoryManager()
 {
 
@@ -40,15 +52,18 @@ MemoryManager::MemoryManager(QVector<Segment> segments, QVector<Process> process
     this->setSegments(segments);
     this->setProcesses(processes);
     this->setIs_best_fit(is_best_fit);
+    // TODO: Create inhereted allocater bases on is_best_fit
 }
 
 MemoryManager::MemoryManager(QVector<Segment> segments, bool is_best_fit)
 {
     this->setSegments(segments);
     this->setIs_best_fit(is_best_fit);
+    // TODO: Create inhereted allocater bases on is_best_fit
 }
 
 MemoryManager::MemoryManager(bool is_best_fit)
 {
     this->setIs_best_fit(is_best_fit);
+    // TODO: Create inhereted allocater bases on is_best_fit
 }

@@ -10,6 +10,7 @@ private:
     QVector<Segment> segments;
     QVector<Process> processes;
     bool is_best_fit;
+    Allocator allocator;
 public:
     MemoryManager();
     MemoryManager(QVector<Segment> segments, QVector<Process> processes,bool is_best_fit);
@@ -21,6 +22,8 @@ public:
     void setProcesses(const QVector<Process> &value);
     QVector<Segment> getSegments() const;
     void setSegments(const QVector<Segment> &value);
+    void deallocate_segment(Segment s);
+    void deallocate_process(Process p);
 };
 
 #endif // MEMORYMANAGER_H
