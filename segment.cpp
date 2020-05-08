@@ -57,6 +57,22 @@ int Segment::get_numProcesses()
     return numProcesses;
 }
 
+void Segment::free()
+{
+    this.set_isHole(1);
+    this.set_processesNames(QVector<QString> temp);
+}
+
+float Segment::getSize() const
+{
+    return size;
+}
+
+void Segment::setSize(float value)
+{
+    size = value;
+}
+
 void Segment::set_numProcesses(int value)
 {
     numProcesses =  value;

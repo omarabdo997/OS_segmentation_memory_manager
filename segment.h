@@ -5,8 +5,9 @@
 class Segment
 {
 private:
-    int from;
-    int to;
+    float from;
+    float to;
+    float size;
     QString name;
     bool isHole;
     QVector<QString> processesNames;
@@ -27,7 +28,9 @@ public:
     QVector<QString> get_processesNames();
     void set_processesNames(QVector<QString> vec);
     int get_numProcesses();
-
+    void free();
+    float getSize() const;
+    void setSize(float value);
 };
 
 #endif // SEGMENT_H
