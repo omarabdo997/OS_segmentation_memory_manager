@@ -32,43 +32,44 @@ public:
 
     int getNumber_processes() const;
 
-    int getMemory_size() const;
+    float getMemory_size() const;
 
-    QVector<QPair<int, int> > getHoles_values() const;
+    QVector<QPair<float, float> > getHoles_values() const;
 
-    QVector<QVector<QPair<QString, int> > > getProcesses_values() const;
+//    QVector<QVector<QPair<QString, int> > > getProcesses_values() const;
 
     int getAllocation_algorithm() const;
 
-    void setNumber_processes(int value);
+//    void setNumber_processes(int value);
 
 private slots:
     void on_next_first_button_clicked();
 
     void on_next_second_button_clicked();
 
-    void on_number_segmants_button_clicked();
+//    void on_number_segmants_button_clicked();
 
-    void on_processes_combo_box_currentIndexChanged(int index);
+//    void on_processes_combo_box_currentIndexChanged(int index);
 
     void on_back_second_button_clicked();
 
-    void on_back_third_button_clicked();
+//    void on_back_third_button_clicked();
 
-    void on_next_third_button_clicked();
+//    void on_next_third_button_clicked();
 
 private:
     Ui::SegmentationSelector *ui;
     bool rdy;
     int number_holes;
     int number_processes;
-    int memory_size;
+    float memory_size;
     QVector<QPair<QLineEdit*,QLineEdit*>>holes;
-    QVector<QPair<int,int>>holes_values;
-    QVector<QVector<QPair<QLineEdit*,QLineEdit*>>>processes;
-    QVector<QVector<QPair<QString,int>>>processes_values;
+    QVector<QPair<float,float>>holes_values;
+//    QVector<QVector<QPair<QLineEdit*,QLineEdit*>>>processes;
+//    QVector<QVector<QPair<QString,int>>>processes_values;
     int allocation_algorithm;
     int FIRST_TIME=1;
+    void create_hole_form(int i,float starting_address=-1,float size=-1);
 
 };
 

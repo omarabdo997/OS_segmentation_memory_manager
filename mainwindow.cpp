@@ -5,6 +5,9 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
+    SegmentationSelector s;
+    s.exec();
+    number_processes=s.getNumber_processes();
     ui->setupUi(this);
     setMinimumSize(1000,600);
     ui->memory_layout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
@@ -18,23 +21,10 @@ MainWindow::MainWindow(QWidget *parent)
         ui->processes_list->addItem("Process "+QString::number(i+1));
         ui->processes_combo_box->addItem("Process "+QString::number(i+1));
     }
-
-
-    SegmentationSelector s;
-    s.exec();
-
-    number_processes=s.getNumber_processes();
     if(!s.getRdy())
     {
         this->~MainWindow();
-
-
-
     }
-
-
-
-
 }
 
 MainWindow::~MainWindow()
