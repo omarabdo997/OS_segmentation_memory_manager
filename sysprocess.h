@@ -4,17 +4,21 @@
 #include "segment.h"
 class Process
 {
-   QVector<Segment>Segments;
-public:
+private:
+   QVector<Segment>segments;
    QString name;
-   Segment get_Segment(int from,int to,QString name);
+public:
+   void add_Segment(Segment s);
    void add_Segment(QString name,int start,int end);
    void remove_Segment(QString name,int start,int end);
-   Process(QString name, QVector<Segment>Segments);
+   Segment get_Segment(int from,int to,QString name);
+   Process(QString name, QVector<Segment>segments);
    Process(QString name);
    Process();
    QString getName() const;
    void setName(const QString &value);
+   QVector<Segment> getSegments() const;
+   void setSegments(const QVector<Segment> &value);
 };
 
 #endif // PROCESS_H

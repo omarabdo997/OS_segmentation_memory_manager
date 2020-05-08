@@ -4,11 +4,26 @@ Process::Process()
 {
 
 }
+void Process::add_Segment(Segment s)
+{
+    segments.push_back(s);
+}
+
 void Process::add_Segment(QString name, int start, int end)
 {
     Segment segment(start,end,name);
-    Process::Segments.push_back(segment);
+    segments.push_back(segment);
 }
+QVector<Segment> Process::getSegments() const
+{
+    return segments;
+}
+
+void Process::setSegments(const QVector<Segment> &value)
+{
+    segments = value;
+}
+
 QString Process::getName() const
 {
     return name;
@@ -21,12 +36,12 @@ void Process::setName(const QString &value)
 
 QVector<Segment> Process::getSegments() const
 {
-    return Segments;
+    return segments;
 }
 
 void Process::setSegments(const QVector<Segment> &value)
 {
-    Segments = value;
+    segments = value;
 }
 
 Segment Process::get_Segment(int from,int to,QString name)
@@ -53,10 +68,10 @@ void Process::remove_Segment(QString name,int start,int finish)
     }
 }
 
-Process::Process(QString name, QVector<Segment> Segments)
+Process::Process(QString name, QVector<Segment> segments)
 {
     this->name = name;
-    this->Segments = Segments;
+    this->segments = segments;
 }
 
 Process::Process(QString name)
