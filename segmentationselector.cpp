@@ -44,6 +44,7 @@ void SegmentationSelector::on_next_first_button_clicked()
             create_hole_form(i);
         }
     }
+    ui->next_second_button->setDefault(true);
     ui->form_widget->hide();
     ui->holes_widget->show();
 
@@ -88,6 +89,7 @@ void SegmentationSelector::on_next_second_button_clicked()
     }
     ui->holes_widget->hide();
     ui->form_widget->show();
+    ui->next_first_button->setDefault(true);
     this->rdy=1;
     this->close();
 }
@@ -175,6 +177,7 @@ void SegmentationSelector::on_back_second_button_clicked()
             holes_values[i].second=-1;
         }
     }
+    ui->next_first_button->setDefault(true);
     ui->holes_widget->hide();
     ui->form_widget->show();
 }
