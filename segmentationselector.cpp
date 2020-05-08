@@ -158,9 +158,22 @@ void SegmentationSelector::on_back_second_button_clicked()
 {
     for(int i=0;i<number_holes;i++)
     {
-        holes_values[i].first=holes[i].first->text().toFloat();
-        holes_values[i].second=holes[i].second->text().toFloat();
-
+        if(holes[i].first->text() != "")
+        {
+            holes_values[i].first=holes[i].first->text().toFloat();
+        }
+        else
+        {
+            holes_values[i].first=-1;
+        }
+        if(holes[i].second->text() != "")
+        {
+            holes_values[i].second=holes[i].second->text().toFloat();
+        }
+        else
+        {
+            holes_values[i].second=-1;
+        }
     }
     ui->holes_widget->hide();
     ui->form_widget->show();
