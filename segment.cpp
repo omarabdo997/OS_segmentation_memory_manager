@@ -61,6 +61,7 @@ void Segment::free()
 {
     this.set_isHole(1);
     this.set_processesNames(QVector<QString> temp);
+    this->set_name("FREE");
 }
 
 float Segment::getSize() const
