@@ -4,12 +4,6 @@ firstFitAllocator::firstFitAllocator()
 {
 
 }
-
-bool firstFitAllocator::is_allocated()
-{
-    return isAllocated;
-}
-\
 void firstFitAllocator::allocate(Process s, QVector<Segment> &segments)
 {
     QVector<Segment>p_segments=s.getSegments();
@@ -41,7 +35,7 @@ void firstFitAllocator::allocate(Process s, QVector<Segment> &segments)
              Segment seg(d_segments[pos].get_from()+p_segments[i].getSize(),d_segments[pos].get_to(),"");
              seg.set_isHole(1);
              //the ocuppied part of old segment;
-             d_segments[pos].set_to(p_segments[i].getSize());
+             d_segments[pos].set_to(d_segments[pos].get_from()+p_segments[i].getSize());
              d_segments[pos].setSize(p_segments[i].getSize());
              d_segments[pos].set_isHole(0);
              d_segments[pos].set_name(p_segments[i].get_name());

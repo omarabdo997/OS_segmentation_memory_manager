@@ -15,6 +15,7 @@ private:
     void set_numProcesses(int value);
 public:
     Segment();
+    Segment(float size,QString name);
     Segment(int from,int to,QString name);
     void set_from(int value);
     int get_from();

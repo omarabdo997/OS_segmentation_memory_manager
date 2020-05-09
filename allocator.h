@@ -5,6 +5,8 @@
 #include "sysprocess.h"
 class Allocator
 {
+protected:
+    bool isAllocated;
 private:
     void merge(int index, QVector<Segment>& segments,bool before);
 public:
@@ -12,6 +14,7 @@ public:
     virtual void allocate(Process process, QVector<Segment>& segments)=0;
     void deallocate(Segment s, QVector<Segment>& segments, QString pName);
     void deallocate(Segment s, QVector<Segment>& segments);
+    bool is_allocated();
 };
 
 #endif // ALLOCATOR_H

@@ -10,11 +10,11 @@ Segment::Segment(int from,int to,QString name)
     this->set_from(from);
     this->set_to(to);
     this->set_name(name);
+    this->setSize(to-from);
 }
-
 void Segment::set_to(int value)
 {
-    to = value;
+    Segment::to=value;
 }
 
 int Segment::get_to()
@@ -94,4 +94,10 @@ void Segment::addProcessname(QString Name)
 {
     processesNames.push_back(Name);
     numProcesses++;
+}
+Segment::Segment(float size,QString name)
+{
+    Segment::size=size;
+    Segment::name=name;
+    set_to(from+size);
 }

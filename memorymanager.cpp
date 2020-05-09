@@ -42,6 +42,11 @@ void MemoryManager::deallocate_process(Process p)
         allocator->deallocate(process_segments[i], segments, p.getName());
 }
 
+void MemoryManager::allocate_process(Process process, QVector<Segment> &segments)
+{
+    allocator->allocate(process,segments);
+}
+
 MemoryManager::MemoryManager()
 {
 
@@ -61,9 +66,13 @@ MemoryManager::MemoryManager(QVector<Segment> segments, bool is_best_fit)
     this->setIs_best_fit(is_best_fit);
     MemoryManager::is_best_fit?allocator=new bestFitAllocator():allocator=new firstFitAllocator();
 }
+bool MemoryManager::isAlocated()
+{
+    return allocator->is_allocated();
+}
 
 MemoryManager::MemoryManager(bool is_best_fit)
 {
     this->setIs_best_fit(is_best_fit);
-   MemoryManager::is_best_fit?allocator=new bestFitAllocator():allocator=new bestFitAllocator();
+   MemoryManager::is_best_fit?allocator=new bestFitAllocator():allocator=new firstFitAllocator();
 }

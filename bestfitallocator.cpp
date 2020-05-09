@@ -4,6 +4,7 @@ bestFitAllocator::bestFitAllocator()
 {
 
 }
+
 void bestFitAllocator::allocate(Process s, QVector<Segment> &segments)
 {
 
@@ -37,7 +38,7 @@ void bestFitAllocator::allocate(Process s, QVector<Segment> &segments)
             Segment seg(d_segments[pos].get_from()+p_segments[i].getSize(),d_segments[pos].get_to(),"");
             seg.set_isHole(1);
             //the ocuppied part of old segment;
-            d_segments[pos].set_to(p_segments[i].getSize());
+            d_segments[pos].set_to(d_segments[pos].get_from()+p_segments[i].getSize());
             d_segments[pos].setSize(p_segments[i].getSize());
             d_segments[pos].set_isHole(0);
             d_segments[pos].set_name(p_segments[i].get_name());
@@ -59,7 +60,4 @@ void bestFitAllocator::allocate(Process s, QVector<Segment> &segments)
    }
 segments=d_segments;
 }
-bool bestFitAllocator::is_allocated()
-{
-    return isAllocated;
-}
+

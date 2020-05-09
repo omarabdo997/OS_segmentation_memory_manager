@@ -19,6 +19,10 @@ void Allocator::merge(int index, QVector<Segment> &segments, bool before)
         }
     }
 }
+bool Allocator::is_allocated()
+{
+    return isAllocated;
+}
 
 Allocator::Allocator()
 {
