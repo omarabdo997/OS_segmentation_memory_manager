@@ -13,6 +13,7 @@
 #include <QtAlgorithms>
 #include "segment.h"
 #include <QMessageBox>
+#include "memorymanager.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -24,7 +25,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    void draw(QVector<Segment>&segments);
+    void draw(QVector<Segment>segments);
     void draw2();
     void clear(QVBoxLayout *layout);
     void delay();
@@ -41,6 +42,8 @@ private slots:
 
     void on_add_processes_comboBox_currentIndexChanged(const QString &arg1);
 
+    void on_submit_button_clicked();
+
 protected:
       void showEvent(QShowEvent *ev);
 
@@ -56,6 +59,7 @@ private:
     void add_segmants(QString current_process, int i);
     QVector<QPair<float,float>>holes_values;
     float memory_size;
+    MemoryManager MM;
 
 
 };

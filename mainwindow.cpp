@@ -37,14 +37,14 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::draw(QVector<Segment> &segments)
+void MainWindow::draw(QVector<Segment> segments)
 {
 
     clear(ui->memory_layout);
     clear(ui->ruler_layout);
     QFont font_14("times",14);
     QPalette color;
-    int scale=100;
+    int scale=20;
     QLabel *zero_ruler=new QLabel("0");
     zero_ruler->setMinimumHeight(10);
     zero_ruler->setMaximumHeight(10);
@@ -58,25 +58,26 @@ void MainWindow::draw(QVector<Segment> &segments)
              label=new QLabel("");
              label->setFrameStyle(1);
              color=QPalette(Qt::Window,Qt::gray);
-             label->setMinimumSize(200,scale*segments[i].getSize());
-             label->setMaximumSize(200,scale*segments[i].getSize());
+             label->setMinimumSize(200,scale*(segments[i].get_to()-segments[i].get_from()));
+             label->setMaximumSize(200,scale*(segments[i].get_to()-segments[i].get_from()));
              label->setAutoFillBackground(true);
              label->setPalette(color);
              label->setFont(font_14);
              label->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
              ui->memory_layout->addWidget(label);
          }
-         else if(segments[i].get_name()=="Occupied")
+         else if(segments[i].get_name().size()>=8 and segments[i].get_name().startsWith("Occupied"))
          {
              QPushButton *button=new QPushButton("Occupied");
              button->setFont(font_14);
              button->setStyleSheet("background-color:rgb(5, 176, 255)");
-
              connect(button,&QPushButton::clicked,[=](){
+                 MM.deallocate_segment(segments[i]);
+                 draw(MM.getSegments());
              });
              button->setPalette(color);
-             button->setMinimumSize(200,scale*segments[i].getSize());
-             button->setMaximumSize(200,scale*segments[i].getSize());
+             button->setMinimumSize(200,scale*(segments[i].get_to()-segments[i].get_from()));
+             button->setMaximumSize(200,scale*(segments[i].get_to()-segments[i].get_from()));
              ui->memory_layout->addWidget(button);
          }
 //         else
@@ -91,8 +92,8 @@ void MainWindow::draw(QVector<Segment> &segments)
 
          QLabel *ruler=new QLabel(QString::number(segments[i].get_to()));
          ruler->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
-         ruler->setMinimumHeight(scale*segments[i].getSize());
-         ruler->setMaximumHeight(scale*segments[i].getSize());
+         ruler->setMinimumHeight(scale*(segments[i].get_to()-segments[i].get_from()));
+         ruler->setMaximumHeight(scale*(segments[i].get_to()-segments[i].get_from()));
          ui->ruler_layout->addWidget(ruler);
      }
 }
@@ -229,6 +230,7 @@ void MainWindow::showEventHelper()
             {
                 segments.back().set_to(segments.back().get_to()+holes_values[i].second);
                 segments.back().setSize(segments.back().get_to()-segments.back().get_from());
+                segments.back().set_processesNames(QVector<QString>(1,""));
                 start=segments.back().get_to();
             }
             else
@@ -237,19 +239,22 @@ void MainWindow::showEventHelper()
                 segment.set_isHole(true);
                 segments.push_back(segment);
                 segments.back().setSize(segments.back().get_to()-segments.back().get_from());
+                segments.back().set_processesNames(QVector<QString>(1,""));
                 start=start+holes_values[i].second;
             }
         }
         else if(start<holes_values[i].first)
         {
-            Segment segment(start,holes_values[i].first,"Occupied");
+            Segment segment(start,holes_values[i].first,"Occupied"+QString::number(i));
             segment.set_isHole(false);
             segments.push_back(segment);
             segments.back().setSize(segments.back().get_to()-segments.back().get_from());
+            segments.back().set_processesNames(QVector<QString>(1,""));
             segment=Segment(holes_values[i].first,holes_values[i].first+holes_values[i].second,"");
             segment.set_isHole(true);
             segments.push_back(segment);
             segments.back().setSize(segments.back().get_to()-segments.back().get_from());
+            segments.back().set_processesNames(QVector<QString>(1,""));
             start=holes_values[i].first+holes_values[i].second;
         }
         else
@@ -262,10 +267,11 @@ void MainWindow::showEventHelper()
     if(memory_size>segments.back().get_to())
     {
         qDebug()<<memory_size;
-        Segment segment(segments.back().get_to(),memory_size,"Occupied");
+        Segment segment(segments.back().get_to(),memory_size,"Occupiedrest");
         segment.set_isHole(false);
         segments.push_back(segment);
         segments.back().setSize(segments.back().get_to()-segments.back().get_from());
+        segments.back().set_processesNames(QVector<QString>(1,""));
     }
     else if(memory_size<segments.back().get_to())
     {
@@ -275,7 +281,8 @@ void MainWindow::showEventHelper()
     {
         qDebug()<<"start "<<segments[i].get_from()<<" end "<<segments[i].get_to();
     }
-    draw(segments);
+    MM=MemoryManager(segments,0);
+    draw(MM.getSegments());
 }
 
 void MainWindow::add_segmants_withBackUp(QString current_process, QVector<QPair<QString, int> > &back_up,int i)
@@ -353,4 +360,24 @@ void MainWindow::on_add_processes_comboBox_currentIndexChanged(const QString &ar
             ui->segmants_layout->addWidget(processes[arg1][i].first,i,0);
             ui->segmants_layout->addWidget(processes[arg1][i].second,i,1);
         }
+}
+
+void MainWindow::on_submit_button_clicked()
+{
+    Process process=ui->add_processes_comboBox->currentText();
+    QVector<Segment>segments_input;
+
+    for(int i=0;i<processes[process.getName()].size();i++)
+    {
+        float size=processes[process.getName()][i].second->text().toFloat();
+        QString name=processes[process.getName()][i].first->text();
+        Segment segment(size,name);
+        segment.set_isHole(false);
+        segment.set_processesNames(QVector<QString>(1,process.getName()));
+        segments_input.push_back(segment);
+    }
+    process.setSegments(segments_input);
+    MM.allocate_process(process,segments_input);
+    qDebug()<<MM.isAlocated();
+    draw(MM.getSegments());
 }
