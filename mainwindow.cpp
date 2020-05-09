@@ -84,7 +84,7 @@ void MainWindow::draw(QVector<Segment> segments)
          else
          {
              label=new QLabel(segments[i].get_processesNames()[0]+"\n"+segments[i].get_name());
-             label->setFrameStyle(4);
+             label->setFrameStyle(1);
              QColor colour(p_color[segments[i].get_processesNames()[0]]);
              color=QPalette(Qt::Window,colour);
              label->setMinimumSize(200,scale*(segments[i].get_to()-segments[i].get_from()));
@@ -141,7 +141,7 @@ void MainWindow::draw2()
          {
              QLabel *label;
              label=new QLabel("P"+QString::number(i+1)+"\nCode");
-             label->setFrameStyle(4);
+             label->setFrameStyle(1);
              color=QPalette(Qt::Window,Qt::red);
              label->setAutoFillBackground(true);
              label->setPalette(color);
@@ -169,7 +169,7 @@ void MainWindow::draw2()
          {
              QLabel *label;
              label=new QLabel("P"+QString::number(i+1)+"\nCode");
-             label->setFrameStyle(4);
+             label->setFrameStyle(1);
              color=QPalette(Qt::Window,Qt::blue);
              label->setAutoFillBackground(true);
              label->setPalette(color);
@@ -324,7 +324,10 @@ void MainWindow::on_add_processes_comboBox_currentIndexChanged(const QString &ar
 void MainWindow::on_submit_button_clicked()
 {
     Process process=ui->add_processes_comboBox->currentText();
-
+    if(process.getName()=="")
+    {
+        return;
+    }
     for(int i=0;i<processes[process.getName()].size();i++)
     {
         float size=processes[process.getName()][i].second->text().toFloat();
@@ -352,12 +355,12 @@ void MainWindow::on_submit_button_clicked()
         label1->setPalette(color_head);
         label1->setAutoFillBackground(true);
         ui->segmants_layout_answer->addWidget(label1,0,0);
-        QLabel *label2=new QLabel("From",this);
+        QLabel *label2=new QLabel("Base",this);
         label2->setAutoFillBackground(true);
         label2->setFont(font_14);
         label2->setPalette(color_head);
         ui->segmants_layout_answer->addWidget(label2,0,1);
-        QLabel *label3=new QLabel("To",this);
+        QLabel *label3=new QLabel("Limit",this);
         label3->setAutoFillBackground(true);
         label3->setFont(font_14);
         label3->setPalette(color_head);
@@ -434,12 +437,12 @@ void MainWindow::on_processes_combo_box_currentIndexChanged(const QString &arg1)
         label1->setPalette(color_head);
         label1->setAutoFillBackground(true);
         ui->segmants_layout_answer->addWidget(label1,0,0);
-        QLabel *label2=new QLabel("From",this);
+        QLabel *label2=new QLabel("Base",this);
         label2->setAutoFillBackground(true);
         label2->setFont(font_14);
         label2->setPalette(color_head);
         ui->segmants_layout_answer->addWidget(label2,0,1);
-        QLabel *label3=new QLabel("To",this);
+        QLabel *label3=new QLabel("Limit",this);
         label3->setAutoFillBackground(true);
         label3->setFont(font_14);
         label3->setPalette(color_head);
