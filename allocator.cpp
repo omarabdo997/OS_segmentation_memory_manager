@@ -12,6 +12,7 @@ void Allocator::merge(int index, QVector<Segment> &segments, bool before)
         if(segments[index-1].get_isHole())
         {
             segments[index].set_from(segments[index-1].get_from());
+            segments[index].setSize(segments[index].get_to()-segments[index].get_from());
             segments.remove(index-1);
         }
     }
@@ -20,6 +21,7 @@ void Allocator::merge(int index, QVector<Segment> &segments, bool before)
         if(segments[index+1].get_isHole())
         {
             segments[index].set_to(segments[index+1].get_to());
+            segments[index].setSize(segments[index].get_to()-segments[index].get_from());
             segments.remove(index+1);
         }
     }

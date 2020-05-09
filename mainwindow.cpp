@@ -331,6 +331,7 @@ void MainWindow::on_submit_button_clicked()
     for(int i=0;i<processes[process.getName()].size();i++)
     {
         float size=processes[process.getName()][i].second->text().toFloat();
+        qDebug()<<"size "<<size;
         QString name=processes[process.getName()][i].first->text();
         Segment segment(size,name);
         segment.set_isHole(false);
@@ -341,6 +342,7 @@ void MainWindow::on_submit_button_clicked()
     }
 //    process.setSegments(segments_input);
     MM.getAllocator()->setIsAllocated(true);
+    qDebug()<< processes[process.getName()][0].second->text().toFloat();
     MM.allocate_process(process);
     int index=ui->add_processes_comboBox->findText(process.getName(),Qt::MatchExactly);
     if(MM.isAlocated())
