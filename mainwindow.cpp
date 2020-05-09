@@ -12,14 +12,15 @@ MainWindow::MainWindow(QWidget *parent)
     setMinimumSize(1000,600);
     ui->memory_layout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     ui->ruler_layout->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
+    ui->segmants_layout->setAlignment(Qt::AlignTop);
+    ui->widget->hide();
 
     QFont font_12("times",12);
-    ui->processes_list->setFont(font_12);
+    ui->add_processes_comboBox->setFont(font_12);
     ui->processes_combo_box->setFont(font_12);
     for(int i=0;i<number_processes;i++)
     {
-        ui->processes_list->addItem("Process "+QString::number(i+1));
-        ui->processes_combo_box->addItem("Process "+QString::number(i+1));
+        ui->add_processes_comboBox->addItem("Process "+QString::number(i+1));
     }
     if(!s.getRdy())
     {
@@ -157,10 +158,6 @@ void MainWindow::draw2()
              label->setMaximumSize(200,scale*100);
              ui->memory_layout->addWidget(label);
          }
-
-
-
-
          QLabel *ruler=new QLabel(QString::number(i+1));
          ruler->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
          ruler->setMinimumHeight(scale*100);
@@ -186,10 +183,7 @@ void MainWindow::on_delete_process_clicked()
     {
         return;
     }
-    QList<QListWidgetItem*>items;
     QString process_name=ui->processes_combo_box->currentText();
-    items=ui->processes_list->findItems(process_name,Qt::MatchExactly);
-    delete items[0];
     ui->processes_combo_box->removeItem(ui->processes_combo_box->currentIndex());
 
 }
@@ -197,10 +191,8 @@ void MainWindow::on_delete_process_clicked()
 void MainWindow::on_add_process_clicked()
 {
 
-    ui->processes_combo_box->addItem("Process "+QString::number(++number_processes));
-    ui->processes_list->addItem("Process "+QString::number(number_processes));
-    ui->processes_combo_box->setCurrentText("Process "+QString::number(number_processes));
-
+    ui->add_processes_comboBox->addItem("Process "+QString::number(++number_processes));
+    ui->add_processes_comboBox->setCurrentText("Process "+QString::number(number_processes));
 }
 void MainWindow::delay()
 {
@@ -217,4 +209,81 @@ void MainWindow::showEvent(QShowEvent *ev)
 void MainWindow::showEventHelper()
 {
     draw2();
+}
+
+void MainWindow::add_segmants_withBackUp(QString current_process, QVector<QPair<QString, int> > &back_up,int i)
+{
+    QFont font_12("times",12);
+    processes[current_process][i].first=new QLineEdit(this);
+    processes[current_process][i].first->setFont(font_12);
+    processes[current_process][i].first->setText("Segment "+QString::number(i+1));
+    processes[current_process][i].first->setText(back_up[i].first);
+    processes[current_process][i].second=new QLineEdit(this);
+    processes[current_process][i].second->setFont(font_12);
+    processes[current_process][i].second->setPlaceholderText("Size");
+    if(QString::number(back_up[i].second) !="0")
+    {
+        processes[current_process][i].second->setText(QString::number(back_up[i].second));
+    }
+    ui->segmants_layout->addWidget(processes[current_process][i].first,i,0);
+    ui->segmants_layout->addWidget(processes[current_process][i].second,i,1);
+}
+
+void MainWindow::add_segmants(QString current_process, int i)
+{
+    QFont font_12("times",12);
+    processes[current_process][i].first=new QLineEdit(this);
+    processes[current_process][i].first->setFont(font_12);
+    processes[current_process][i].first->setText("Segment "+QString::number(i+1));
+    processes[current_process][i].second=new QLineEdit(this);
+    processes[current_process][i].second->setFont(font_12);
+    processes[current_process][i].second->setPlaceholderText("Size");
+    ui->segmants_layout->addWidget(processes[current_process][i].first,i,0);
+    ui->segmants_layout->addWidget(processes[current_process][i].second,i,1);
+}
+
+void MainWindow::on_number_segmants_button_clicked()
+{
+        QString current_process=ui->add_processes_comboBox->currentText();
+        if(current_process=="")
+            return;
+        int number_segmants=ui->number_segmants_lineEdit->text().toInt();
+        int min=processes[current_process].size()<number_segmants?processes[current_process].size():number_segmants;
+        QVector<QPair<QString,int>>back_up(min);
+        for(int i=0;i<min;i++)
+        {
+            back_up[i].first=processes[current_process][i].first->text();
+            back_up[i].second=processes[current_process][i].second->text().toInt();
+        }
+        QLayoutItem *child;
+        while ((child = ui->segmants_layout->takeAt(0)) != 0)
+        {
+            child->widget()->setParent(NULL);
+            delete child;
+        }
+        processes[current_process].resize(number_segmants);
+        for(int i=0;i<min;i++)
+        {
+            add_segmants_withBackUp(current_process,back_up,i);
+        }
+        for(int i=min;i<number_segmants;i++)
+        {
+            add_segmants(current_process,i);
+        }
+}
+
+
+
+void MainWindow::on_add_processes_comboBox_currentIndexChanged(const QString &arg1)
+{
+        QLayoutItem *child;
+        while ((child = ui->segmants_layout->takeAt(0)) != 0)
+        {
+            child->widget()->setParent(ui->widget);
+        }
+        for(int i=0;i<processes[arg1].size();i++)
+        {
+            ui->segmants_layout->addWidget(processes[arg1][i].first,i,0);
+            ui->segmants_layout->addWidget(processes[arg1][i].second,i,1);
+        }
 }
