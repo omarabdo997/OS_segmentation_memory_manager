@@ -56,7 +56,9 @@ void Allocator::deallocate(Segment s, QVector<Segment> &segments, QString pName 
             else
             {
                 segments[i].free();
-                if (i == 0 && segments.size() > 1)
+                if(i==0 && segments.size()==1)
+                {}
+                else if (i == 0 && segments.size() > 1)
                     merge(i,segments,0);
                 else if(i == segments.size()-1)
                     merge(i,segments,1);
