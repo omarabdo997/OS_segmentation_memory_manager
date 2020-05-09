@@ -286,7 +286,7 @@
       <item row="1" column="0">
        <widget class="QScrollArea" name="scrollArea">
         <property name="frameShape">
-         <enum>QFrame::NoFrame</enum>
+         <enum>QFrame::Box</enum>
         </property>
         <property name="horizontalScrollBarPolicy">
          <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -299,8 +299,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>586</width>
-           <height>255</height>
+           <width>582</width>
+           <height>251</height>
           </rect>
          </property>
          <layout class="QGridLayout" name="gridLayout_2">
