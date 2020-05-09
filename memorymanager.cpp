@@ -52,14 +52,14 @@ MemoryManager::MemoryManager(QVector<Segment> segments, QVector<Process> process
     this->setSegments(segments);
     this->setProcesses(processes);
     this->setIs_best_fit(is_best_fit);
-    MemoryManager::is_best_fit?allocator=new bestFitAllocator():allocator=new bestFitAllocator();
+    MemoryManager::is_best_fit?allocator=new bestFitAllocator():allocator=new firstFitAllocator();
 }
 
 MemoryManager::MemoryManager(QVector<Segment> segments, bool is_best_fit)
 {
     this->setSegments(segments);
     this->setIs_best_fit(is_best_fit);
-    MemoryManager::is_best_fit?allocator=new bestFitAllocator():allocator=new bestFitAllocator();
+    MemoryManager::is_best_fit?allocator=new bestFitAllocator():allocator=new firstFitAllocator();
 }
 
 MemoryManager::MemoryManager(bool is_best_fit)

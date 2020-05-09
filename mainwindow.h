@@ -10,6 +10,9 @@
 #include <QVBoxLayout>
 #include <QTime>
 #include <QMap>
+#include <QtAlgorithms>
+#include "segment.h"
+#include <QMessageBox>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -21,7 +24,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    void draw();
+    void draw(QVector<Segment>&segments);
     void draw2();
     void clear(QVBoxLayout *layout);
     void delay();
@@ -51,6 +54,8 @@ private:
     QMap<QString,QVector<QPair<QLineEdit*,QLineEdit*>>>processes;
     void add_segmants_withBackUp(QString current_process, QVector<QPair<QString,int>>&back_up, int i);
     void add_segmants(QString current_process, int i);
+    QVector<QPair<float,float>>holes_values;
+    float memory_size;
 
 
 };
