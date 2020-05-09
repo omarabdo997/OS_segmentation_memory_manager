@@ -9,8 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
     s.exec();
     holes_values=s.getHoles_values();
     memory_size=s.getMemory_size();
-    qSort(holes_values.begin(),holes_values.end());
-
+    MM=s.getMM();
     number_processes=s.getNumber_processes();
     ui->setupUi(this);
     setMinimumSize(1000,600);
@@ -220,68 +219,7 @@ void MainWindow::showEvent(QShowEvent *ev)
 
 void MainWindow::showEventHelper()
 {
-    QVector<Segment>segments;
-    float start=0;
-    for(int i=0;i<holes_values.size();i++)
-    {
-        if(start==holes_values[i].first)
-        {
-            if(i>0)
-            {
-                segments.back().set_to(segments.back().get_to()+holes_values[i].second);
-                segments.back().setSize(segments.back().get_to()-segments.back().get_from());
-                segments.back().set_processesNames(QVector<QString>(1,""));
-                start=segments.back().get_to();
-            }
-            else
-            {
-                Segment segment(start,start+holes_values[i].second,"");
-                segment.set_isHole(true);
-                segments.push_back(segment);
-                segments.back().setSize(segments.back().get_to()-segments.back().get_from());
-                segments.back().set_processesNames(QVector<QString>(1,""));
-                start=start+holes_values[i].second;
-            }
-        }
-        else if(start<holes_values[i].first)
-        {
-            Segment segment(start,holes_values[i].first,"Occupied"+QString::number(i));
-            segment.set_isHole(false);
-            segments.push_back(segment);
-            segments.back().setSize(segments.back().get_to()-segments.back().get_from());
-            segments.back().set_processesNames(QVector<QString>(1,""));
-            segment=Segment(holes_values[i].first,holes_values[i].first+holes_values[i].second,"");
-            segment.set_isHole(true);
-            segments.push_back(segment);
-            segments.back().setSize(segments.back().get_to()-segments.back().get_from());
-            segments.back().set_processesNames(QVector<QString>(1,""));
-            start=holes_values[i].first+holes_values[i].second;
-        }
-        else
-        {
-            QMessageBox::critical(this,"Over lap","Holes are overlapping");
-        }
 
-    }
-
-    if(memory_size>segments.back().get_to())
-    {
-        qDebug()<<memory_size;
-        Segment segment(segments.back().get_to(),memory_size,"Occupiedrest");
-        segment.set_isHole(false);
-        segments.push_back(segment);
-        segments.back().setSize(segments.back().get_to()-segments.back().get_from());
-        segments.back().set_processesNames(QVector<QString>(1,""));
-    }
-    else if(memory_size<segments.back().get_to())
-    {
-        QMessageBox::critical(this,"Memory size exceded","You have exceded you memory size!");
-    }
-    for(int i=0;i<segments.size();i++)
-    {
-        qDebug()<<"start "<<segments[i].get_from()<<" end "<<segments[i].get_to();
-    }
-    MM=MemoryManager(segments,0);
     draw(MM.getSegments());
 }
 
@@ -375,9 +313,13 @@ void MainWindow::on_submit_button_clicked()
         segment.set_isHole(false);
         segment.set_processesNames(QVector<QString>(1,process.getName()));
         segments_input.push_back(segment);
+        process.add_Segment(segment);
     }
-    process.setSegments(segments_input);
-    MM.allocate_process(process,segments_input);
+//    process.setSegments(segments_input);
+    QVector<Segment>segments=MM.getSegments();
+    MM.allocate_process(process,segments);
+    int index=ui->add_processes_comboBox->findText(process.getName(),Qt::MatchExactly);
+    ui->add_processes_comboBox->removeItem(index);
     qDebug()<<MM.isAlocated();
-    draw(MM.getSegments());
+    draw(segments);
 }

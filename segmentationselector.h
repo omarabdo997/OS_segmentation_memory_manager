@@ -11,6 +11,7 @@
 #include <QFont>
 #include <QDebug>
 #include <QComboBox>
+#include <memorymanager.h>
 
 namespace Ui {
 class SegmentationSelector;
@@ -42,6 +43,8 @@ public:
 
 //    void setNumber_processes(int value);
 
+    MemoryManager getMM() const;
+
 private slots:
     void on_next_first_button_clicked();
 
@@ -70,6 +73,7 @@ private:
     int allocation_algorithm;
     int FIRST_TIME=1;
     void create_hole_form(int i,float starting_address=-1,float size=-1);
+    MemoryManager MM;
 
 };
 

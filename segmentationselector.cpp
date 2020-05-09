@@ -87,6 +87,80 @@ void SegmentationSelector::on_next_second_button_clicked()
         holes_values[i].second=holes[i].second->text().toFloat();
 
     }
+    QVector<Segment>segments;
+    float start=0;
+    qSort(holes_values.begin(),holes_values.end());
+    for(int i=0;i<holes_values.size();i++)
+    {
+        if(start==holes_values[i].first)
+        {
+            if(i>0)
+            {
+                segments.back().set_to(segments.back().get_to()+holes_values[i].second);
+                segments.back().setSize(segments.back().get_to()-segments.back().get_from());
+                segments.back().set_processesNames(QVector<QString>(1,""));
+                start=segments.back().get_to();
+            }
+            else
+            {
+                Segment segment(start,start+holes_values[i].second,"");
+                segment.set_isHole(true);
+                segments.push_back(segment);
+                segments.back().setSize(segments.back().get_to()-segments.back().get_from());
+                segments.back().set_processesNames(QVector<QString>(1,""));
+                start=start+holes_values[i].second;
+            }
+        }
+        else if(start<holes_values[i].first)
+        {
+            Segment segment(start,holes_values[i].first,"Occupied"+QString::number(i));
+            segment.set_isHole(false);
+            segments.push_back(segment);
+            segments.back().setSize(segments.back().get_to()-segments.back().get_from());
+            segments.back().set_processesNames(QVector<QString>(1,""));
+            segment=Segment(holes_values[i].first,holes_values[i].first+holes_values[i].second,"");
+            segment.set_isHole(true);
+            segments.push_back(segment);
+            segments.back().setSize(segments.back().get_to()-segments.back().get_from());
+            segments.back().set_processesNames(QVector<QString>(1,""));
+            start=holes_values[i].first+holes_values[i].second;
+        }
+        else
+        {
+            QMessageBox::critical(this,"Over lap","Holes are overlapping");
+            return;
+        }
+
+    }
+
+    if(memory_size>segments.back().get_to())
+    {
+        qDebug()<<memory_size;
+        Segment segment(segments.back().get_to(),memory_size,"Occupiedrest");
+        segment.set_isHole(false);
+        segments.push_back(segment);
+        segments.back().setSize(segments.back().get_to()-segments.back().get_from());
+        segments.back().set_processesNames(QVector<QString>(1,""));
+    }
+    else if(memory_size<segments.back().get_to())
+    {
+        QMessageBox::critical(this,"Memory size exceded","You have exceded you memory size!");
+        return;
+    }
+    for(int i=0;i<segments.size();i++)
+    {
+        qDebug()<<"start "<<segments[i].get_from()<<" end "<<segments[i].get_to();
+    }
+    int alg;
+    if(ui->first_fit->isChecked())
+    {
+          alg=0;
+    }
+    else
+    {
+        alg=1;
+    }
+    MM=MemoryManager(segments,alg);
     ui->holes_widget->hide();
     ui->form_widget->show();
     ui->next_first_button->setDefault(true);
@@ -202,6 +276,11 @@ void SegmentationSelector::create_hole_form(int i, float starting_address, float
     {
         holes[i-1].first->setText(QString::number(starting_address));
     }
+}
+
+MemoryManager SegmentationSelector::getMM() const
+{
+    return MM;
 }
 
 //void SegmentationSelector::on_back_third_button_clicked()
