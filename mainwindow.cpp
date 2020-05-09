@@ -324,7 +324,7 @@ void MainWindow::on_add_processes_comboBox_currentIndexChanged(const QString &ar
 void MainWindow::on_submit_button_clicked()
 {
     Process process=ui->add_processes_comboBox->currentText();
-    if(process.getName()=="")
+    if(process.getName()=="" or processes[process.getName()].size()==0)
     {
         return;
     }
