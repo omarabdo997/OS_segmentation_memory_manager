@@ -15,6 +15,7 @@
 #include <QMessageBox>
 #include "memorymanager.h"
 #include <QTextLine>
+#include <QScrollBar>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE

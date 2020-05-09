@@ -16,11 +16,11 @@ private:
 public:
     Segment();
     Segment(float size,QString name);
-    Segment(int from,int to,QString name);
-    void set_from(int value);
-    int get_from();
-    void set_to(int value);
-    int get_to();
+    Segment(float from, float to, QString name);
+    void set_from(float value);
+    float get_from();
+    void set_to(float value);
+    float get_to();
     void set_name(QString value);
     QString get_name();
     void set_isHole(bool value);

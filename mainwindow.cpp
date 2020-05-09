@@ -59,8 +59,8 @@ void MainWindow::draw(QVector<Segment> segments)
              label=new QLabel("");
              label->setFrameStyle(1);
              color=QPalette(Qt::Window,Qt::gray);
-             label->setMinimumSize(200,scale*(segments[i].get_to()-segments[i].get_from()));
-             label->setMaximumSize(200,scale*(segments[i].get_to()-segments[i].get_from()));
+             label->setMinimumSize(200,scale*int(segments[i].get_to()-segments[i].get_from()));
+             label->setMaximumSize(200,scale*int(segments[i].get_to()-segments[i].get_from()));
              label->setAutoFillBackground(true);
              label->setPalette(color);
              label->setFont(font_14);
@@ -77,8 +77,8 @@ void MainWindow::draw(QVector<Segment> segments)
                  draw(MM.getSegments());
              });
              button->setPalette(color);
-             button->setMinimumSize(200,scale*(segments[i].get_to()-segments[i].get_from()));
-             button->setMaximumSize(200,scale*(segments[i].get_to()-segments[i].get_from()));
+             button->setMinimumSize(200,scale*int(segments[i].get_to()-segments[i].get_from()));
+             button->setMaximumSize(200,scale*int(segments[i].get_to()-segments[i].get_from()));
              ui->memory_layout->addWidget(button);
          }
          else
@@ -87,8 +87,8 @@ void MainWindow::draw(QVector<Segment> segments)
              label->setFrameStyle(1);
              QColor colour(p_color[segments[i].get_processesNames()[0]]);
              color=QPalette(Qt::Window,colour);
-             label->setMinimumSize(200,scale*(segments[i].get_to()-segments[i].get_from()));
-             label->setMaximumSize(200,scale*(segments[i].get_to()-segments[i].get_from()));
+             label->setMinimumSize(200,scale*int(segments[i].get_to()-segments[i].get_from()));
+             label->setMaximumSize(200,scale*int(segments[i].get_to()-segments[i].get_from()));
              label->setAutoFillBackground(true);
              label->setPalette(color);
              label->setFont(font_14);
@@ -101,10 +101,11 @@ void MainWindow::draw(QVector<Segment> segments)
 
          QLabel *ruler=new QLabel(QString::number(segments[i].get_to()));
          ruler->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
-         ruler->setMinimumHeight(scale*(segments[i].get_to()-segments[i].get_from()));
-         ruler->setMaximumHeight(scale*(segments[i].get_to()-segments[i].get_from()));
+         ruler->setMinimumHeight(scale*int(segments[i].get_to()-segments[i].get_from()));
+         ruler->setMaximumHeight(scale*int(segments[i].get_to()-segments[i].get_from()));
          ui->ruler_layout->addWidget(ruler);
      }
+     ui->scrollArea->verticalScrollBar()->setValue(ui->scrollArea->verticalScrollBar()->minimum());
 }
 
 void MainWindow::draw2()
@@ -413,6 +414,8 @@ void MainWindow::on_submit_button_clicked()
 
 
         draw(MM.getSegments());
+
+
 
     }
     else

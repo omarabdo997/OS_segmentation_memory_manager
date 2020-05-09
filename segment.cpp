@@ -5,29 +5,29 @@ Segment::Segment()
 
 }
 
-Segment::Segment(int from,int to,QString name)
+Segment::Segment(float from,float to,QString name)
 {
     this->set_from(from);
     this->set_to(to);
     this->set_name(name);
     this->setSize(to-from);
 }
-void Segment::set_to(int value)
+void Segment::set_to(float value)
 {
     Segment::to=value;
 }
 
-int Segment::get_to()
+float Segment::get_to()
 {
     return to;
 }
 
-void Segment::set_from(int value)
+void Segment::set_from(float value)
 {
     from  = value;
 }
 
-int Segment::get_from()
+float Segment::get_from()
 {
     return from;
 }
