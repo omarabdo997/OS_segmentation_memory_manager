@@ -7,7 +7,7 @@ bestFitAllocator::bestFitAllocator()
 
 void bestFitAllocator::allocate(Process s, QVector<Segment> &segments)
 {
-
+isAllocated=true;
    QVector<Segment>p_segments=s.getSegments();
    QVector<Segment>d_segments=segments;
    for(int i=0;i<p_segments.size();i++)
@@ -49,6 +49,8 @@ void bestFitAllocator::allocate(Process s, QVector<Segment> &segments)
         else
         {
             d_segments[pos].set_isHole(0);
+            d_segments[pos].set_name(p_segments[i].get_name());
+            d_segments[pos].set_processesNames(p_segments[i].get_processesNames());
         }
 
     }

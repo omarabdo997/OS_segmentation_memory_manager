@@ -42,9 +42,14 @@ void MemoryManager::deallocate_process(Process p)
         allocator->deallocate(process_segments[i], segments, p.getName());
 }
 
-void MemoryManager::allocate_process(Process process, QVector<Segment> &segments)
+void MemoryManager::allocate_process(Process process)
 {
     allocator->allocate(process,segments);
+}
+
+Allocator *MemoryManager::getAllocator() const
+{
+    return allocator;
 }
 
 MemoryManager::MemoryManager()

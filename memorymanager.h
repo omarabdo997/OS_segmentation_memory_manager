@@ -25,8 +25,9 @@ public:
     void setSegments(const QVector<Segment> &value);
     void deallocate_segment(Segment s);
     void deallocate_process(Process p);
-    void allocate_process(Process process,QVector<Segment>&segments);
+    void allocate_process(Process process);
     bool isAlocated();
+    Allocator *getAllocator() const;
 };
 
 #endif // MEMORYMANAGER_H

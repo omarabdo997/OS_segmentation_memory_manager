@@ -6,6 +6,7 @@ firstFitAllocator::firstFitAllocator()
 }
 void firstFitAllocator::allocate(Process s, QVector<Segment> &segments)
 {
+    isAllocated=true;
     QVector<Segment>p_segments=s.getSegments();
     QVector<Segment>d_segments=segments;
     for(int i=0;i<p_segments.size();i++)
@@ -39,13 +40,15 @@ void firstFitAllocator::allocate(Process s, QVector<Segment> &segments)
              d_segments[pos].setSize(p_segments[i].getSize());
              d_segments[pos].set_isHole(0);
              d_segments[pos].set_name(p_segments[i].get_name());
-             d_segments[pos].addProcessname(s.getName());
+             d_segments[pos].set_processesNames(QVector<QString>(1,s.getName()));
              //finally adding the new hole segment into our memory chunk
              d_segments.insert(d_segments.begin()+pos+1,seg);
          }
          else
          {
              d_segments[pos].set_isHole(0);
+             d_segments[pos].set_name(p_segments[i].get_name());
+             d_segments[pos].set_processesNames(p_segments[i].get_processesNames());
          }
 
      }

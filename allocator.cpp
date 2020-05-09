@@ -1,5 +1,10 @@
 #include "allocator.h"
 
+void Allocator::setIsAllocated(bool value)
+{
+    isAllocated = value;
+}
+
 void Allocator::merge(int index, QVector<Segment> &segments, bool before)
 {
     if(before)
@@ -26,7 +31,7 @@ bool Allocator::is_allocated()
 
 Allocator::Allocator()
 {
-
+isAllocated=true;
 }
 
 void Allocator::deallocate(Segment s, QVector<Segment> &segments, QString pName = "")

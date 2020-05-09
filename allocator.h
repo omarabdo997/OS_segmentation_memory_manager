@@ -15,6 +15,7 @@ public:
     void deallocate(Segment s, QVector<Segment>& segments, QString pName);
     void deallocate(Segment s, QVector<Segment>& segments);
     bool is_allocated();
+    void setIsAllocated(bool value);
 };
 
 #endif // ALLOCATOR_H

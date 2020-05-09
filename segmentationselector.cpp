@@ -132,8 +132,15 @@ void SegmentationSelector::on_next_second_button_clicked()
         }
 
     }
-
-    if(memory_size>segments.back().get_to())
+    if(segments.size()==0)
+    {
+        Segment segment(0,memory_size,"Occupiedrest");
+        segment.set_isHole(false);
+        segments.push_back(segment);
+        segments.back().setSize(segments.back().get_to()-segments.back().get_from());
+        segments.back().set_processesNames(QVector<QString>(1,""));
+    }
+    else if(memory_size>segments.back().get_to())
     {
         qDebug()<<memory_size;
         Segment segment(segments.back().get_to(),memory_size,"Occupiedrest");
@@ -146,10 +153,6 @@ void SegmentationSelector::on_next_second_button_clicked()
     {
         QMessageBox::critical(this,"Memory size exceded","You have exceded you memory size!");
         return;
-    }
-    for(int i=0;i<segments.size();i++)
-    {
-        qDebug()<<"start "<<segments[i].get_from()<<" end "<<segments[i].get_to();
     }
     int alg;
     if(ui->first_fit->isChecked())

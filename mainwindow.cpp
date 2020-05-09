@@ -16,7 +16,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->memory_layout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     ui->ruler_layout->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
     ui->segmants_layout->setAlignment(Qt::AlignTop);
+    ui->segmants_layout_answer->setAlignment(Qt::AlignTop);
     ui->widget->hide();
+    ui->gridLayout_2->setAlignment(Qt::AlignTop);
 
     QFont font_12("times",12);
     ui->add_processes_comboBox->setFont(font_12);
@@ -79,12 +81,20 @@ void MainWindow::draw(QVector<Segment> segments)
              button->setMaximumSize(200,scale*(segments[i].get_to()-segments[i].get_from()));
              ui->memory_layout->addWidget(button);
          }
-//         else
-//         {
-//             label=new QLabel("P"+QString::number(i+1)+"\nCode");
-//             label->setFrameStyle(4);
-//             color=QPalette(Qt::Window,Qt::blue);
-//         }
+         else
+         {
+             label=new QLabel(segments[i].get_processesNames()[0]+"\n"+segments[i].get_name());
+             label->setFrameStyle(4);
+             QColor colour(p_color[segments[i].get_processesNames()[0]]);
+             color=QPalette(Qt::Window,colour);
+             label->setMinimumSize(200,scale*(segments[i].get_to()-segments[i].get_from()));
+             label->setMaximumSize(200,scale*(segments[i].get_to()-segments[i].get_from()));
+             label->setAutoFillBackground(true);
+             label->setPalette(color);
+             label->setFont(font_14);
+             label->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+             ui->memory_layout->addWidget(label);
+         }
 
 
 
@@ -195,7 +205,18 @@ void MainWindow::on_delete_process_clicked()
         return;
     }
     QString process_name=ui->processes_combo_box->currentText();
+
     ui->processes_combo_box->removeItem(ui->processes_combo_box->currentIndex());
+    qDebug()<<MM.getProcesses().size();
+    Process pros;
+    pros.setSegments(process_segment_results[process_name]);
+    pros.setName(process_name);
+
+
+   MM.deallocate_process(pros);
+   draw(MM.getSegments());
+
+
 
 }
 
@@ -303,7 +324,6 @@ void MainWindow::on_add_processes_comboBox_currentIndexChanged(const QString &ar
 void MainWindow::on_submit_button_clicked()
 {
     Process process=ui->add_processes_comboBox->currentText();
-    QVector<Segment>segments_input;
 
     for(int i=0;i<processes[process.getName()].size();i++)
     {
@@ -311,15 +331,144 @@ void MainWindow::on_submit_button_clicked()
         QString name=processes[process.getName()][i].first->text();
         Segment segment(size,name);
         segment.set_isHole(false);
-        segment.set_processesNames(QVector<QString>(1,process.getName()));
-        segments_input.push_back(segment);
+        QVector<QString>p_name;
+        p_name.push_back(process.getName());
+        segment.set_processesNames(p_name);
         process.add_Segment(segment);
     }
 //    process.setSegments(segments_input);
-    QVector<Segment>segments=MM.getSegments();
-    MM.allocate_process(process,segments);
+    MM.getAllocator()->setIsAllocated(true);
+    MM.allocate_process(process);
     int index=ui->add_processes_comboBox->findText(process.getName(),Qt::MatchExactly);
-    ui->add_processes_comboBox->removeItem(index);
-    qDebug()<<MM.isAlocated();
-    draw(segments);
+    if(MM.isAlocated())
+    {
+        ui->add_processes_comboBox->removeItem(index);
+        ui->processes_combo_box->addItem(process.getName());
+        ui->processes_combo_box->setCurrentText(process.getName());
+        QPalette color_head=QPalette(Qt::Window,Qt::darkBlue);
+        QFont font_14("times",14);
+        QLabel *label1=new QLabel("Name",this);
+        label1->setFont(font_14);
+        label1->setPalette(color_head);
+        label1->setAutoFillBackground(true);
+        ui->segmants_layout_answer->addWidget(label1,0,0);
+        QLabel *label2=new QLabel("From",this);
+        label2->setAutoFillBackground(true);
+        label2->setFont(font_14);
+        label2->setPalette(color_head);
+        ui->segmants_layout_answer->addWidget(label2,0,1);
+        QLabel *label3=new QLabel("To",this);
+        label3->setAutoFillBackground(true);
+        label3->setFont(font_14);
+        label3->setPalette(color_head);
+        ui->segmants_layout_answer->addWidget(label3,0,2);
+        for(int i=0;i<MM.getSegments().size();i++)
+        {
+            if(MM.getSegments()[i].get_processesNames().size() != 0 and MM.getSegments()[i].get_processesNames()[0]==process.getName())
+            {
+
+                QFont font_12("times",12);
+                QColor light_blue(3, 194, 252);
+                QPalette color=QPalette(Qt::Window,light_blue);
+                process_segment_results[process.getName()].push_back(MM.getSegments()[i]);
+                QLabel *label1=new QLabel(MM.getSegments()[i].get_name(),this);
+                label1->setFont(font_12);
+                label1->setPalette(color);
+                label1->setAutoFillBackground(true);
+                ui->segmants_layout_answer->addWidget(label1,i+1,0);
+                QLabel *label2=new QLabel(QString::number(MM.getSegments()[i].get_from()),this);
+                label2->setFont(font_12);
+                label2->setPalette(color);
+                label2->setAutoFillBackground(true);
+                ui->segmants_layout_answer->addWidget(label2,i+1,1);
+                QLabel *label3=new QLabel(QString::number(MM.getSegments()[i].get_to()),this);
+                label3->setFont(font_12);
+                label3->setPalette(color);
+                label3->setAutoFillBackground(true);
+                ui->segmants_layout_answer->addWidget(label3,i+1,2);
+            }
+
+        }
+
+
+            QColor rand_color(rand()%255,rand()%255,rand()%255);
+            p_color[process.getName()]=rand_color;
+            int i=p_color.size()-1;
+            QLabel *label=new QLabel(process.getName(),this);
+            QFont font_12("times",12);
+            QLabel *label_color=new QLabel(this);
+            label->setFont(font_12);
+            label_color->setFont(font_12);
+            QPalette colour=QPalette(Qt::Window,rand_color);
+            label_color->setPalette(colour);
+            label_color->setAutoFillBackground(true);
+            label->setAutoFillBackground(true);
+            ui->gridLayout_2->addWidget(label,i,0);
+            ui->gridLayout_2->addWidget(label_color,i,1);
+
+
+        draw(MM.getSegments());
+
+    }
+    else
+    {
+        QMessageBox::information(this,"Can't add","Can't add process in memory");
+    }
+
+}
+
+void MainWindow::on_processes_combo_box_currentIndexChanged(const QString &arg1)
+{
+    QLayoutItem *child;
+    while ((child = ui->segmants_layout_answer->takeAt(0)) != 0)
+    {
+        child->widget()->setParent(NULL);
+        delete child;
+    }
+    if(process_segment_results[arg1].size()>0)
+    {
+        QPalette color_head=QPalette(Qt::Window,Qt::darkBlue);
+        QFont font_14("times",14);
+        QLabel *label1=new QLabel("Name",this);
+        label1->setFont(font_14);
+        label1->setPalette(color_head);
+        label1->setAutoFillBackground(true);
+        ui->segmants_layout_answer->addWidget(label1,0,0);
+        QLabel *label2=new QLabel("From",this);
+        label2->setAutoFillBackground(true);
+        label2->setFont(font_14);
+        label2->setPalette(color_head);
+        ui->segmants_layout_answer->addWidget(label2,0,1);
+        QLabel *label3=new QLabel("To",this);
+        label3->setAutoFillBackground(true);
+        label3->setFont(font_14);
+        label3->setPalette(color_head);
+        ui->segmants_layout_answer->addWidget(label3,0,2);
+    }
+
+    for(int i=0;i<process_segment_results[arg1].size();i++)
+    {
+
+
+            QFont font_12("times",12);
+            QColor light_blue(3, 194, 252);
+            QPalette color=QPalette(Qt::Window,light_blue);
+            QLabel *label1=new QLabel(process_segment_results[arg1][i].get_name(),this);
+            label1->setFont(font_12);
+            label1->setPalette(color);
+            label1->setAutoFillBackground(true);
+            ui->segmants_layout_answer->addWidget(label1,i+1,0);
+            QLabel *label2=new QLabel(QString::number(process_segment_results[arg1][i].get_from()),this);
+            label2->setFont(font_12);
+            label2->setPalette(color);
+            label2->setAutoFillBackground(true);
+            ui->segmants_layout_answer->addWidget(label2,i+1,1);
+            QLabel *label3=new QLabel(QString::number(process_segment_results[arg1][i].get_to()),this);
+            label3->setFont(font_12);
+            label3->setPalette(color);
+            label3->setAutoFillBackground(true);
+            ui->segmants_layout_answer->addWidget(label3,i+1,2);
+
+
+    }
 }

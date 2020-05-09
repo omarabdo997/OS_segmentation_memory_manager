@@ -14,6 +14,7 @@
 #include "segment.h"
 #include <QMessageBox>
 #include "memorymanager.h"
+#include <QTextLine>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -44,6 +45,8 @@ private slots:
 
     void on_submit_button_clicked();
 
+    void on_processes_combo_box_currentIndexChanged(const QString &arg1);
+
 protected:
       void showEvent(QShowEvent *ev);
 
@@ -60,6 +63,9 @@ private:
     QVector<QPair<float,float>>holes_values;
     float memory_size;
     MemoryManager MM;
+    QMap<QString,QVector<Segment>>process_segment_results;
+    QVector<Process>processes_for_dealocate;
+    QMap<QString,QColor>p_color;
 
 
 };
