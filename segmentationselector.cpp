@@ -260,6 +260,11 @@ void SegmentationSelector::on_back_second_button_clicked()
     ui->form_widget->show();
 }
 
+void SegmentationSelector::setRdy(bool value)
+{
+    rdy = value;
+}
+
 void SegmentationSelector::create_hole_form(int i, float starting_address, float size)
 {
     QLabel *l=new QLabel("Hole "+QString::number(i),this);

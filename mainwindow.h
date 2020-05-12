@@ -48,12 +48,15 @@ private slots:
 
     void on_processes_combo_box_currentIndexChanged(const QString &arg1);
 
+    void on_actionNew_triggered();
+
 protected:
       void showEvent(QShowEvent *ev);
 
 
 
 private:
+    SegmentationSelector s;
     void showEventHelper();
     Ui::MainWindow *ui;
     int number_processes=0;
@@ -67,6 +70,7 @@ private:
     QMap<QString,QVector<Segment>>process_segment_results;
     QVector<Process>processes_for_dealocate;
     QMap<QString,QColor>p_color;
+
 
 
 };

@@ -2,7 +2,6 @@
 #define SEGMENTATIONSELECTOR_H
 
 #include <QDialog>
-#include "mainwindow.h"
 #include <QLabel>
 #include <QLineEdit>
 #include <QString>
@@ -12,6 +11,7 @@
 #include <QDebug>
 #include <QComboBox>
 #include <memorymanager.h>
+#include <QMessageBox>
 
 namespace Ui {
 class SegmentationSelector;
@@ -44,6 +44,8 @@ public:
 //    void setNumber_processes(int value);
 
     MemoryManager getMM() const;
+
+    void setRdy(bool value);
 
 private slots:
     void on_next_first_button_clicked();

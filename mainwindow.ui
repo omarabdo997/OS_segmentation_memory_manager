@@ -80,7 +80,7 @@
               <x>0</x>
               <y>0</y>
               <width>387</width>
-              <height>192</height>
+              <height>180</height>
              </rect>
             </property>
             <layout class="QGridLayout" name="gridLayout_6">
@@ -167,7 +167,7 @@
               <x>0</x>
               <y>0</y>
               <width>387</width>
-              <height>120</height>
+              <height>111</height>
              </rect>
             </property>
             <layout class="QGridLayout" name="gridLayout_5">
@@ -249,7 +249,7 @@
             <x>0</x>
             <y>0</y>
             <width>389</width>
-            <height>531</height>
+            <height>510</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="gridLayout_3" columnstretch="3,1,10">
@@ -314,7 +314,7 @@
             <x>0</x>
             <y>0</y>
             <width>144</width>
-            <height>210</height>
+            <height>201</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="gridLayout">
@@ -346,6 +346,34 @@
     </item>
    </layout>
   </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1028</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionNew"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <addaction name="menuFile"/>
+  </widget>
+  <action name="actionNew">
+   <property name="text">
+    <string>New</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

@@ -1,11 +1,12 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-    SegmentationSelector s;
+
     s.exec();
     holes_values=s.getHoles_values();
     memory_size=s.getMemory_size();
@@ -478,5 +479,49 @@ void MainWindow::on_processes_combo_box_currentIndexChanged(const QString &arg1)
             ui->segmants_layout_answer->addWidget(label3,i+1,2);
 
 
+    }
+}
+
+void MainWindow::on_actionNew_triggered()
+{
+    s.setRdy(0);
+    s.exec();
+    if(s.getRdy())
+    {
+        p_color.clear();
+        processes.clear();
+        QList<QObject *> widgets = ui->widget->children();
+        qDeleteAll(widgets);
+        holes_values=s.getHoles_values();
+        memory_size=s.getMemory_size();
+        MM=s.getMM();
+        number_processes=s.getNumber_processes();
+        ui->add_processes_comboBox->clear();
+        ui->processes_combo_box->clear();
+        for(int i=0;i<number_processes;i++)
+        {
+            ui->add_processes_comboBox->addItem("Process "+QString::number(i+1));
+        }
+        QLayoutItem *child;
+        while ((child = ui->segmants_layout->takeAt(0)) != 0)
+        {
+            child->widget()->setParent(NULL);
+            delete child;
+        }
+        while ((child = ui->segmants_layout_answer->takeAt(0)) != 0)
+        {
+            child->widget()->setParent(NULL);
+            delete child;
+        }
+        while ((child = ui->gridLayout_2->takeAt(0)) != 0)
+        {
+            child->widget()->setParent(NULL);
+            delete child;
+        }
+
+        ui->number_segmants_lineEdit->clear();
+        process_segment_results.clear();
+
+        draw(MM.getSegments());
     }
 }
