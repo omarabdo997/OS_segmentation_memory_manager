@@ -50,6 +50,8 @@ private slots:
 
     void on_actionNew_triggered();
 
+    void on_actionExit_triggered();
+
 protected:
       void showEvent(QShowEvent *ev);
 

@@ -525,3 +525,8 @@ void MainWindow::on_actionNew_triggered()
         draw(MM.getSegments());
     }
 }
+
+void MainWindow::on_actionExit_triggered()
+{
+    close();
+}
