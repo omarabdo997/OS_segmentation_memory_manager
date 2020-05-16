@@ -282,6 +282,12 @@ void MainWindow::on_number_segmants_button_clicked()
         QString current_process=ui->add_processes_comboBox->currentText();
         if(current_process=="")
             return;
+        if(!isInt(ui->number_segmants_lineEdit->text().toStdString()) or ui->number_segmants_lineEdit->text()=="")
+        {
+            QMessageBox::critical(this,"Invalid number","Please enter a valid integer number!");
+            return;
+        }
+
         int number_segmants=ui->number_segmants_lineEdit->text().toInt();
         int min=processes[current_process].size()<number_segmants?processes[current_process].size():number_segmants;
         QVector<QPair<QString,int>>back_up(min);
@@ -332,9 +338,24 @@ void MainWindow::on_submit_button_clicked()
     }
     for(int i=0;i<processes[process.getName()].size();i++)
     {
+        if(!isFloat(processes[process.getName()][i].second->text().toStdString()) or processes[process.getName()][i].second->text()=="")
+        {
+            QMessageBox::critical(this,"Invalid size","Please enter valid segment sizes!");
+            return;
+        }
         float size=processes[process.getName()][i].second->text().toFloat();
+        if(size<=0)
+        {
+            QMessageBox::critical(this,"Invalid size","Segments sizes must be greater than 0!");
+            return;
+        }
         qDebug()<<"size "<<size;
         QString name=processes[process.getName()][i].first->text();
+        if(name=="")
+        {
+            QMessageBox::critical(this,"Invalid name","Please give all segments valid names!");
+            return;
+        }
         Segment segment(size,name);
         segment.set_isHole(false);
         QVector<QString>p_name;
@@ -343,6 +364,17 @@ void MainWindow::on_submit_button_clicked()
         process.add_Segment(segment);
     }
 //    process.setSegments(segments_input);
+    for (int i=0;i<processes[process.getName()].size();i++)
+    {
+        for(int j=i+1;j<processes[process.getName()].size();j++)
+        {
+            if(processes[process.getName()][i].first->text()==processes[process.getName()][j].first->text())
+            {
+                QMessageBox::critical(this,"Invalid naming","Segments names must be unique!");
+                return;
+            }
+        }
+    }
     MM.getAllocator()->setIsAllocated(true);
     qDebug()<< processes[process.getName()][0].second->text().toFloat();
     MM.allocate_process(process);

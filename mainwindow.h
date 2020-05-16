@@ -16,6 +16,7 @@
 #include "memorymanager.h"
 #include <QTextLine>
 #include <QScrollBar>
+#include <string>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -73,6 +74,28 @@ private:
     QVector<Process>processes_for_dealocate;
     QMap<QString,QColor>p_color;
 
+    bool isFloat(const std::string& s)
+    {
+        int points=0;
+        std::string::const_iterator it = s.begin();
+        while (it != s.end() && (std::isdigit(*it) or ((*it)=='.')))
+        {
+            if((*it)=='.')
+            {
+                points++;
+            }
+            ++it;
+        }
+        return !s.empty() && it == s.end() && points<=1 && s.back()!='.';
+    }
+    bool isInt(const std::string s)
+    {
+        for (int i = 0; i < s.length(); i++)
+            if (isdigit(s[i]) == false)
+                return false;
+
+        return true;
+    }
 
 
 };
