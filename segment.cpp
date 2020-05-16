@@ -5,29 +5,29 @@ Segment::Segment()
 
 }
 
-Segment::Segment(int from,int to,QString name)
+Segment::Segment(float from,float to,QString name)
 {
     this->set_from(from);
     this->set_to(to);
     this->set_name(name);
+    this->setSize(to-from);
 }
-
-void Segment::set_to(int value)
+void Segment::set_to(float value)
 {
-    to = value;
+    Segment::to=value;
 }
 
-int Segment::get_to()
+float Segment::get_to()
 {
     return to;
 }
 
-void Segment::set_from(int value)
+void Segment::set_from(float value)
 {
     from  = value;
 }
 
-int Segment::get_from()
+float Segment::get_from()
 {
     return from;
 }
@@ -42,12 +42,62 @@ QString Segment::get_name()
     return name;
 }
 
-void Segment::set_status(bool value)
+void Segment::set_isHole(bool value)
 {
-    status = value;
+    isHole = value;
 }
 
-bool Segment::get_status()
+bool Segment::get_isHole()
 {
-    return status;
+    return isHole;
+}
+
+int Segment::get_numProcesses()
+{
+    return numProcesses;
+}
+
+void Segment::free()
+{
+    this->set_isHole(1);
+    this->set_name("FREE");
+}
+
+float Segment::getSize() const
+{
+    return size;
+}
+
+void Segment::setSize(float value)
+{
+    size = value;
+}
+
+void Segment::set_numProcesses(int value)
+{
+    numProcesses =  value;
+}
+
+void Segment::set_processesNames(QVector<QString> vec)
+{
+    processesNames = vec;
+    set_numProcesses(processesNames.size());
+}
+
+QVector<QString> Segment::get_processesNames()
+{
+    return processesNames;
+}
+
+
+void Segment::addProcessname(QString Name)
+{
+    processesNames.push_back(Name);
+    numProcesses++;
+}
+Segment::Segment(float size,QString name)
+{
+    Segment::size=size;
+    Segment::name=name;
+    set_to(from+size);
 }

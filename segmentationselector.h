@@ -2,7 +2,6 @@
 #define SEGMENTATIONSELECTOR_H
 
 #include <QDialog>
-#include "mainwindow.h"
 #include <QLabel>
 #include <QLineEdit>
 #include <QString>
@@ -11,6 +10,8 @@
 #include <QFont>
 #include <QDebug>
 #include <QComboBox>
+#include <memorymanager.h>
+#include <QMessageBox>
 
 namespace Ui {
 class SegmentationSelector;
@@ -42,6 +43,10 @@ public:
 
 //    void setNumber_processes(int value);
 
+    MemoryManager getMM() const;
+
+    void setRdy(bool value);
+
 private slots:
     void on_next_first_button_clicked();
 
@@ -70,6 +75,29 @@ private:
     int allocation_algorithm;
     int FIRST_TIME=1;
     void create_hole_form(int i,float starting_address=-1,float size=-1);
+    MemoryManager MM;
+    bool isFloat(const std::string& s)
+    {
+        int points=0;
+        std::string::const_iterator it = s.begin();
+        while (it != s.end() && (std::isdigit(*it) or ((*it)=='.')))
+        {
+            if((*it)=='.')
+            {
+                points++;
+            }
+            ++it;
+        }
+        return !s.empty() && it == s.end() && points<=1 && s.back()!='.';
+    }
+    bool isInt(const std::string s)
+    {
+        for (int i = 0; i < s.length(); i++)
+            if (isdigit(s[i]) == false)
+                return false;
+
+        return true;
+    }
 
 };
 
