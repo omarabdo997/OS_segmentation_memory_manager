@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     MM=s.getMM();
     number_processes=s.getNumber_processes();
     ui->setupUi(this);
+    setWindowTitle("Memory Manager");
     setMinimumSize(1000,600);
     ui->memory_layout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     ui->ruler_layout->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
