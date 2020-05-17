@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     MM=s.getMM();
     number_processes=s.getNumber_processes();
     ui->setupUi(this);
+    setWindowTitle("Memory Manager");
     setMinimumSize(1000,600);
     ui->memory_layout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     ui->ruler_layout->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
@@ -420,7 +421,7 @@ void MainWindow::on_submit_button_clicked()
                 label2->setPalette(color);
                 label2->setAutoFillBackground(true);
                 ui->segmants_layout_answer->addWidget(label2,i+1,1);
-                QLabel *label3=new QLabel(QString::number(MM.getSegments()[i].get_to()),this);
+                QLabel *label3=new QLabel(QString::number(MM.getSegments()[i].getSize()),this);
                 label3->setFont(font_12);
                 label3->setPalette(color);
                 label3->setAutoFillBackground(true);
@@ -504,7 +505,7 @@ void MainWindow::on_processes_combo_box_currentIndexChanged(const QString &arg1)
             label2->setPalette(color);
             label2->setAutoFillBackground(true);
             ui->segmants_layout_answer->addWidget(label2,i+1,1);
-            QLabel *label3=new QLabel(QString::number(process_segment_results[arg1][i].get_to()),this);
+            QLabel *label3=new QLabel(QString::number(process_segment_results[arg1][i].getSize()),this);
             label3->setFont(font_12);
             label3->setPalette(color);
             label3->setAutoFillBackground(true);

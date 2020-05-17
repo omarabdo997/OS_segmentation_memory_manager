@@ -6,6 +6,7 @@ SegmentationSelector::SegmentationSelector(QWidget *parent) :
     ui(new Ui::SegmentationSelector)
 {
     ui->setupUi(this);
+    setWindowTitle("Memory Manager");
     ui->holes_layout->setAlignment(Qt::AlignTop);
     ui->holes_widget->hide();
     ui->processess_widget->hide();
