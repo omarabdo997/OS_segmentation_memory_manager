@@ -47,7 +47,7 @@ void MainWindow::draw(QVector<Segment> segments)
     clear(ui->ruler_layout);
     QFont font_14("times",14);
     QPalette color;
-    float scale=20;
+    float scale=2000/memory_size;
     QLabel *zero_ruler=new QLabel("0");
     zero_ruler->setMinimumHeight(10);
     zero_ruler->setMaximumHeight(10);
